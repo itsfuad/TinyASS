@@ -1,0 +1,7 @@
+LOAD R0 10
+LOAD R1 20
+ADD R2 R0 R1
+STORE R2 100
+PRINT R2      ; Display the value of register R2
+PRINT MEM 100 ; Display the value at memory address 100
+HALT
