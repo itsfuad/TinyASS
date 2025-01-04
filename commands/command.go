@@ -17,6 +17,12 @@ const (
 	MUL		  	// Multiply
 	DIV		  	// Divide
 	REM		  	// Remainder
+	AND		  // Bitwise AND
+	OR		  // Bitwise OR
+	XOR		  // Bitwise XOR
+	NOT		  // Bitwise NOT
+	SHL		  // Shift left
+	SHR		  // Shift right
 	JMP          // Unconditional jump
 	JZ           // Jump if zero
 	JNZ          // Jump if not zero
@@ -68,6 +74,18 @@ func ParseInstruction(line string) (Instruction, error) {
 		return ParseDiv(parts)
 	case "REM":
 		return ParseRem(parts)
+	case "AND":
+		return ParseAND(parts)
+	case "OR":
+		return ParseOR(parts)
+	case "XOR":
+		return ParseXOR(parts)
+	case "NOT":
+		return ParseNOT(parts)
+	case "SHL":
+		return ParseSHL(parts)
+	case "SHR":
+		return ParseSHR(parts)
 	case "JMP":
 		return ParseJmp(parts)
 	case "JZ":
@@ -132,6 +150,72 @@ func ParseLoad(parts []string) (Instruction, error) {
 	}
 
 	return Instruction{LOAD, []int{reg, val}}, nil
+}
+
+func ParseAND(parts []string) (Instruction, error) {
+	if len(parts) != 4 {
+		return Instruction{}, fmt.Errorf("AND requires 3 operands\nExample: AND R[0-3] R[0-3] R[0-3]")
+	}
+	registers, err := ParseRegisters(parts[1:]...)
+	if err != nil {
+		return Instruction{}, err
+	}
+	return Instruction{AND, []int{registers[0], registers[1], registers[2]}}, nil
+}
+
+func ParseOR(parts []string) (Instruction, error) {
+	if len(parts) != 4 {
+		return Instruction{}, fmt.Errorf("OR requires 3 operands\nExample: OR R[0-3] R[0-3] R[0-3]")
+	}
+	registers, err := ParseRegisters(parts[1:]...)
+	if err != nil {
+		return Instruction{}, err
+	}
+	return Instruction{OR, []int{registers[0], registers[1], registers[2]}}, nil
+}
+
+func ParseXOR(parts []string) (Instruction, error) {
+	if len(parts) != 4 {
+		return Instruction{}, fmt.Errorf("XOR requires 3 operands\nExample: XOR R[0-3] R[0-3] R[0-3]")
+	}
+	registers, err := ParseRegisters(parts[1:]...)
+	if err != nil {
+		return Instruction{}, err
+	}
+	return Instruction{XOR, []int{registers[0], registers[1], registers[2]}}, nil
+}
+
+func ParseNOT(parts []string) (Instruction, error) {
+	if len(parts) != 3 {
+		return Instruction{}, fmt.Errorf("NOT requires 2 operands\nExample: NOT R[0-3] R[0-3]")
+	}
+	registers, err := ParseRegisters(parts[1:]...)
+	if err != nil {
+		return Instruction{}, err
+	}
+	return Instruction{NOT, []int{registers[0], registers[1]}}, nil
+}
+
+func ParseSHL(parts []string) (Instruction, error) {
+	if len(parts) != 4 {
+		return Instruction{}, fmt.Errorf("SHL requires 3 operands\nExample: SHL R[0-3] R[0-3] R[0-3]")
+	}
+	registers, err := ParseRegisters(parts[1:]...)
+	if err != nil {
+		return Instruction{}, err
+	}
+	return Instruction{SHL, []int{registers[0], registers[1], registers[2]}}, nil
+}
+
+func ParseSHR(parts []string) (Instruction, error) {
+	if len(parts) != 4 {
+		return Instruction{}, fmt.Errorf("SHR requires 3 operands\nExample: SHR R[0-3] R[0-3] R[0-3]")
+	}
+	registers, err := ParseRegisters(parts[1:]...)
+	if err != nil {
+		return Instruction{}, err
+	}
+	return Instruction{SHR, []int{registers[0], registers[1], registers[2]}}, nil
 }
 
 func ParseStore(parts []string) (Instruction, error) {

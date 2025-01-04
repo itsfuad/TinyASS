@@ -5,4 +5,3 @@ STORE R2 100
 DIV R1 R2 R1
 PRINT R2      ; Display the value of register R2
 PRINT MEM 100 ; Display the value at memory address 100
-HALT

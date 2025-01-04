@@ -54,6 +54,18 @@ func (cpu *CPU) Execute(inst commands.Instruction) bool {
 			return false
 		}
 		cpu.registers[inst.Operands[0]] = cpu.registers[inst.Operands[1]] % cpu.registers[inst.Operands[2]]
+	case commands.AND:
+		cpu.registers[inst.Operands[0]] = cpu.registers[inst.Operands[1]] & cpu.registers[inst.Operands[2]]
+	case commands.OR:
+		cpu.registers[inst.Operands[0]] = cpu.registers[inst.Operands[1]] | cpu.registers[inst.Operands[2]]
+	case commands.XOR:
+		cpu.registers[inst.Operands[0]] = cpu.registers[inst.Operands[1]] ^ cpu.registers[inst.Operands[2]]
+	case commands.NOT:
+		cpu.registers[inst.Operands[0]] = ^cpu.registers[inst.Operands[1]]
+	case commands.SHL:
+		cpu.registers[inst.Operands[0]] = cpu.registers[inst.Operands[1]] << uint(inst.Operands[2])
+	case commands.SHR:
+		cpu.registers[inst.Operands[0]] = cpu.registers[inst.Operands[1]] >> uint(inst.Operands[2])
 	case commands.JMP:
 		cpu.pc = inst.Operands[0]
 		return true
