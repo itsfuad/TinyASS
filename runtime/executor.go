@@ -151,6 +151,7 @@ func StartRepl(cpu *CPU) {
 			return
 		case "cls":
 			utils.ClearScreen()
+			continue
 		case "help":
 			printHelp()
 			continue
