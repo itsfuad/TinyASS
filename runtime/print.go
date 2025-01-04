@@ -37,7 +37,7 @@ func printHelp() {
 	utils.GREEN.Println("  DIV dest s1 s2 \t - Divide s1 by s2 into dest")
 	utils.GREEN.Println("  REM dest s1 s2 \t - Remainder of s1 divided by s2 into dest")
 	utils.GREEN.Println("  AND dest s1 s2 \t - Bitwise AND of s1 and s2 into dest")
-	utils.GREEN.Println("  OR dest s1 s2 \t\t - Bitwise OR of s1 and s2 into dest")
+	utils.GREEN.Println("  OR dest s1 s2 \t - Bitwise OR of s1 and s2 into dest")
 	utils.GREEN.Println("  XOR dest s1 s2 \t - Bitwise XOR of s1 and s2 into dest")
 	utils.GREEN.Println("  NOT dest s1 \t\t - Bitwise NOT of s1 into dest")
 	utils.GREEN.Println("  SHL dest s1 s2 \t - Shift s1 left by s2 bits into dest")
