@@ -32,7 +32,7 @@ TinyASS is a simple emulator for a tiny custom processor and its assembly langua
 
 Run the interpreter:
 ```sh
-./tinyass
+./ass
 ```
 
 You will enter the REPL interface where you can type assembly instructions.
