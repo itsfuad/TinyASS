@@ -12,8 +12,8 @@ import (
 // CPU state
 type CPU struct {
 	memory    [commands.MEMORY_SIZE]int
-	registers [4]int      // R0-R3
-	pc        int         // Program counter
+	registers [4]int // R0-R3
+	pc        int    // Program counter
 	program   []commands.Instruction
 }
 
@@ -91,7 +91,6 @@ func (cpu *CPU) Execute(inst commands.Instruction) bool {
 	}
 	return true
 }
-
 
 func RunFile(cpu *CPU) {
 

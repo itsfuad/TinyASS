@@ -1,4 +1,5 @@
 package commands
+
 import (
 	"fmt"
 	"strconv"
@@ -10,19 +11,19 @@ const MEMORY_SIZE = 256
 
 // Opcodes
 const (
-	LOAD = iota  // Load value into register
+	LOAD  = iota // Load value into register
 	STORE        // Store register to memory
 	ADD          // Add
 	SUB          // Subtract
-	MUL		  	// Multiply
-	DIV		  	// Divide
-	REM		  	// Remainder
-	AND		  // Bitwise AND
-	OR		  // Bitwise OR
-	XOR		  // Bitwise XOR
-	NOT		  // Bitwise NOT
-	SHL		  // Shift left
-	SHR		  // Shift right
+	MUL          // Multiply
+	DIV          // Divide
+	REM          // Remainder
+	AND          // Bitwise AND
+	OR           // Bitwise OR
+	XOR          // Bitwise XOR
+	NOT          // Bitwise NOT
+	SHL          // Shift left
+	SHR          // Shift right
 	JMP          // Unconditional jump
 	JZ           // Jump if zero
 	JNZ          // Jump if not zero
@@ -235,7 +236,7 @@ func ParseStore(parts []string) (Instruction, error) {
 	return Instruction{STORE, []int{reg, addr}}, nil
 }
 
-func ParseRegisters(parts... string) ([]int, error) {
+func ParseRegisters(parts ...string) ([]int, error) {
 	var regs []int
 	for _, reg := range parts {
 		num, err := ParseRegister(reg)
@@ -344,28 +345,28 @@ func ParseJnz(parts []string) (Instruction, error) {
 }
 
 func ParsePrint(parts []string) (Instruction, error) {
-    if len(parts) != 2 && len(parts) != 3 {
-        return Instruction{}, fmt.Errorf("PRINT requires 1 or 2 operands\nExample: PRINT R0 or PRINT MEM 100")
-    }
+	if len(parts) != 2 && len(parts) != 3 {
+		return Instruction{}, fmt.Errorf("PRINT requires 1 or 2 operands\nExample: PRINT R0 or PRINT MEM 100")
+	}
 
-    if parts[1] == "MEM" {
-        // Print memory value
+	if parts[1] == "MEM" {
+		// Print memory value
 		if len(parts) != 3 {
 			return Instruction{}, fmt.Errorf("PRINT MEM requires 1 operand\nExample: PRINT MEM 100")
 		}
-        addr, err := ParseMemory(parts[2])
+		addr, err := ParseMemory(parts[2])
 		if err != nil {
 			return Instruction{}, err
 		}
-        return Instruction{PRINT, []int{addr}}, nil
-    } else if strings.HasPrefix(parts[1], "R") {
-        // Print register value
-        reg, err := ParseRegister(parts[1])
+		return Instruction{PRINT, []int{addr}}, nil
+	} else if strings.HasPrefix(parts[1], "R") {
+		// Print register value
+		reg, err := ParseRegister(parts[1])
 		if err != nil {
 			return Instruction{}, err
 		}
-        return Instruction{PRINT, []int{-1, reg}}, nil
-    }
+		return Instruction{PRINT, []int{-1, reg}}, nil
+	}
 
-    return Instruction{}, fmt.Errorf("invalid operand for PRINT")
+	return Instruction{}, fmt.Errorf("invalid operand for PRINT")
 }

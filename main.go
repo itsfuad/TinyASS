@@ -6,7 +6,6 @@ import (
 	"tinyass/runtime"
 )
 
-
 func main() {
 	cpu := runtime.NewCPU()
 	// Check if a script file is passed as a command-line argument
@@ -18,4 +17,3 @@ func main() {
 	// REPL mode
 	runtime.StartRepl(cpu)
 }
-
