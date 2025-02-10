@@ -24,6 +24,12 @@ const (
 	NOT          // Bitwise NOT
 	SHL          // Shift left
 	SHR          // Shift right
+	GT           // Greater than
+	LT           // Less than
+	GTE          // Greater than or equal
+	LTE          // Less than or equal
+	EQ           // Equal
+	NEQ          // Not equal
 	JMP          // Unconditional jump
 	JZ           // Jump if zero
 	JNZ          // Jump if not zero
@@ -87,6 +93,18 @@ func ParseInstruction(line string) (Instruction, error) {
 		return ParseSHL(parts)
 	case "SHR":
 		return ParseSHR(parts)
+	case "GT":
+		return ParseComparison(GT, parts)
+	case "LT":
+		return ParseComparison(LT, parts)
+	case "GTE":
+		return ParseComparison(GTE, parts)
+	case "LTE":
+		return ParseComparison(LTE, parts)
+	case "EQ":
+		return ParseComparison(EQ, parts)
+	case "NEQ":
+		return ParseComparison(NEQ, parts)
 	case "JMP":
 		return ParseJmp(parts)
 	case "JZ":
@@ -373,4 +391,27 @@ func ParsePrint(parts []string) (Instruction, error) {
 	}
 
 	return Instruction{}, fmt.Errorf("invalid operand for PRINT")
+}
+
+// ParseComparison handles all comparison operations (GT, LT, GTE, LTE, EQ, NEQ)
+func ParseComparison(op int, parts []string) (Instruction, error) {
+	opNames := map[int]string{
+		GT:  "GT",
+		LT:  "LT",
+		GTE: "GTE",
+		LTE: "LTE",
+		EQ:  "EQ",
+		NEQ: "NEQ",
+	}
+
+	if len(parts) != 4 {
+		return Instruction{}, fmt.Errorf("%s requires 3 operands\nExample: %s R[0-3] R[0-3] R[0-3]", opNames[op], opNames[op])
+	}
+
+	registers, err := ParseRegisters(parts[1:]...)
+	if err != nil {
+		return Instruction{}, err
+	}
+
+	return Instruction{op, []int{registers[0], registers[1], registers[2]}}, nil
 }

@@ -82,17 +82,36 @@ PRINT MEM 0x64 ; Display the value at memory address 0x64
 ### Commands
 
 - `LOAD reg val` - Load value into register
+- `STORE reg addr` - Store value from register into memory address
 - `ADD dest s1 s2` - Add s1 and s2 into dest
 - `SUB dest s1 s2` - Subtract s2 from s1 into dest
 - `MUL dest s1 s2` - Multiply s1 and s2 into dest
 - `DIV dest s1 s2` - Divide s1 by s2 into dest
 - `REM dest s1 s2` - Remainder of s1 divided by s2 into dest
+- `AND dest s1 s2` - Bitwise AND of s1 and s2 into dest
+- `OR dest s1 s2` - Bitwise OR of s1 and s2 into dest
+- `XOR dest s1 s2` - Bitwise XOR of s1 and s2 into dest
+- `NOT dest s1` - Bitwise NOT of s1 into dest
+- `SHL dest s1 s2` - Shift s1 left by s2 bits into dest
+- `SHR dest s1 s2` - Shift s1 right by s2 bits into dest
+- `GT dest s1 s2` - Set dest to 1 if s1 > s2, else 0
+- `LT dest s1 s2` - Set dest to 1 if s1 < s2, else 0
+- `GTE dest s1 s2` - Set dest to 1 if s1 >= s2, else 0
+- `LTE dest s1 s2` - Set dest to 1 if s1 <= s2, else 0
+- `EQ dest s1 s2` - Set dest to 1 if s1 == s2, else 0
+- `NEQ dest s1 s2` - Set dest to 1 if s1 != s2, else 0
 - `JMP addr` - Jump to address
 - `JZ reg addr` - Jump to address if register is zero
 - `JNZ reg addr` - Jump to address if register is not zero
 - `HALT` - Stop execution
 - `reg` - Show registers
+- `mem` - Show memory
+- `PRINT Rn` - Print value of register Rn
+- `PRINT MEM addr` - Print value at memory address
+- `version` - Show version info
 - `exit` - Exit interpreter
+- `cls` - Clear the screen
+- `help` - Show help message
 
 ## Error Handling
 
