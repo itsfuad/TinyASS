@@ -35,7 +35,7 @@ jobs:
             if [ $OS = "windows" ]; then
               output_name="$output_name.exe"
             fi
-            GOOS=$OS GOARCH=$ARCH go build -o "$output_name" ./...
+            GOOS=$OS GOARCH=$ARCH go build -o "$output_name" .
           done
 
       - name: Generate Next Version
