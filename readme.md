@@ -4,10 +4,16 @@ TinyASS is a simple emulator for a tiny custom processor and its assembly langua
 
 ## Features
 
-- Supports basic arithmetic operations: ADD, SUB, MUL, DIV, REM
-- Memory operations: LOAD, STORE
-- Control flow instructions: JMP, JZ, JNZ, HALT
-- Simple REPL interface for interactive use
+- **Hexadecimal Memory Addresses Only:**  
+  Memory addresses must be provided in hexadecimal format with a `0x` prefix (e.g., `0x00` to `0xFF`).  
+  Decimal values are not accepted.
+
+- **Instructions:**  
+  Supports basic arithmetic and bitwise operations, memory store, and branch instructions.  
+  Use commands like `LOAD`, `STORE`, `ADD`, etc.
+
+- **REPL Mode and Script Execution:**  
+  Run the interpreter in interactive mode or supply a script file.
 
 ## Getting Started
 
@@ -30,10 +36,23 @@ TinyASS is a simple emulator for a tiny custom processor and its assembly langua
 
 ### Usage
 
-Run the interpreter:
-```sh
-./ass
-```
+- **REPL Mode:**
+
+  ```bash
+  go run main.go
+  ```
+
+- **Script Mode:**
+
+  ```bash
+  go run main.go script.ass
+  ```
+
+- **Version:**
+
+  ```bash
+  go run main.go --version
+  ```
 
 You will enter the REPL interface where you can type assembly instructions.
 
@@ -46,6 +65,18 @@ You will enter the REPL interface where you can type assembly instructions.
 > reg
 Registers: R0=10 R1=20 R2=30 R3=0
 > HALT
+```
+
+## Example Assembly File
+
+```assembly
+LOAD R0 10
+LOAD R1 0
+ADD R2 R0 R1
+STORE R2 0x64
+DIV R1 R2 R1
+PRINT R2      ; Display the value of register R2
+PRINT MEM 0x64 ; Display the value at memory address 0x64
 ```
 
 ### Commands
@@ -62,6 +93,10 @@ Registers: R0=10 R1=20 R2=30 R3=0
 - `HALT` - Stop execution
 - `reg` - Show registers
 - `exit` - Exit interpreter
+
+## Error Handling
+
+- If an invalid memory address is provided (outside `0x00` to `0xFF`), the interpreter will report an error.
 
 ## Contributing
 

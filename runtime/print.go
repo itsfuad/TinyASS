@@ -6,18 +6,32 @@ import (
 )
 
 func printRegisters(registers [4]int) {
-	// Improved register display with header and footer
+	// Improved register display with header and different colors for 0 and nonzero values
 	utils.BLUE.Println("---- REGISTERS ----")
-	utils.GREEN.Printf("R0: %d  R1: %d  R2: %d  R3: %d\n", registers[0], registers[1], registers[2], registers[3])
+	// Use GREY for 0 and GREEN for nonzero
+	regStr := ""
+	for i, val := range registers {
+		if val == 0 {
+			regStr += utils.GREY.Sprintf("R%d: %d  ", i, val)
+		} else {
+			regStr += utils.GREEN.Sprintf("R%d: %d  ", i, val)
+		}
+	}
+	utils.GREEN.Println(regStr)
 	utils.BLUE.Println("-------------------")
 }
 
 func printMemory(memory [commands.MEMORY_SIZE]int) {
-	// Improved memory display in 16-value rows with header and footer
+	// Improved memory display in 16-value rows with header and different colors for 0 and nonzero values
 	utils.BLUE.Println("---- MEMORY ----")
 	for i := 0; i < commands.MEMORY_SIZE; i++ {
-		// Print index in hex with fixed width and value
-		utils.GREY.Printf("%02X: %03d  ", i, memory[i])
+		var cell string
+		if memory[i] == 0 {
+			cell = utils.GREY.Sprintf("%02X: %03d  ", i, memory[i])
+		} else {
+			cell = utils.BOLD_YELLOW.Sprintf("%02X: %03d  ", i, memory[i])
+		}
+		utils.GREY.Print(cell)
 		if (i+1)%16 == 0 {
 			utils.YELLOW.Println("")
 		}

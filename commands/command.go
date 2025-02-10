@@ -114,11 +114,15 @@ func ParseRegister(reg string) (int, error) {
 }
 
 func ParseMemory(addr string) (int, error) {
-	num, err := strconv.Atoi(strings.TrimSpace(addr))
-	if err != nil || num < 0 || num >= MEMORY_SIZE {
+	addr = strings.TrimSpace(addr)
+	if !(strings.HasPrefix(addr, "0x") || strings.HasPrefix(addr, "0X")) {
 		return 0, fmt.Errorf(INVALID_MEMORY_ADDRESS, addr)
 	}
-	return num, nil
+	num, err := strconv.ParseInt(addr[2:], 16, 0)
+	if err != nil || int(num) < 0 || int(num) >= MEMORY_SIZE {
+		return 0, fmt.Errorf(INVALID_MEMORY_ADDRESS, addr)
+	}
+	return int(num), nil
 }
 
 func ParseValue(val string) (int, error) {
