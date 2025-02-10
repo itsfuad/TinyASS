@@ -2,15 +2,19 @@
 package main
 
 import (
+	"fmt"
 	"os"
 	"tinyass/runtime"
 )
 
 func main() {
 	cpu := runtime.NewCPU()
-	// Check if a script file is passed as a command-line argument
+	// Check if a script file or flag is passed as a command-line argument
 	if len(os.Args) > 1 {
-		// Load program from file
+		if os.Args[1] == "--version" {
+			fmt.Println("TinyASS version 1.0.0")
+			return
+		}
 		runtime.RunFile(cpu)
 		return
 	}

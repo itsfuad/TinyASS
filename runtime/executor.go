@@ -138,7 +138,7 @@ func StartRepl(cpu *CPU) {
 	utils.BLUE.Println("Type 'help' for commands, 'exit' to quit")
 
 	for {
-		utils.BLUE.Print("> ")
+		utils.BLUE.Print("TinyASS > ")
 		if !scanner.Scan() {
 			break
 		}
@@ -159,6 +159,9 @@ func StartRepl(cpu *CPU) {
 			continue
 		case "mem":
 			printMemory(cpu.memory)
+			continue
+		case "version":
+			utils.GREEN.Println("TinyASS version 1.0.0")
 			continue
 		}
 

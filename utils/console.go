@@ -17,10 +17,14 @@ func ClearScreen() {
 	if runtime.GOOS == "windows" {
 		cmd := exec.Command("cmd", "/c", "cls")
 		cmd.Stdout = os.Stdout
-		cmd.Run()
+		if err := cmd.Run(); err != nil {
+			RED.Printf("Error clearing screen: %v\n", err)
+		}
 	} else {
 		cmd := exec.Command("clear")
 		cmd.Stdout = os.Stdout
-		cmd.Run()
+		if err := cmd.Run(); err != nil {
+			RED.Printf("Error clearing screen: %v\n", err)
+		}
 	}
 }
