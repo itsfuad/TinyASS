@@ -6,8 +6,7 @@ on:
     types:
       - completed
     branches:
-      - main
-      - master
+      - stable
 
 jobs:
   release:
