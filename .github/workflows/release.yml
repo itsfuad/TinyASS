@@ -30,7 +30,7 @@ jobs:
       - name: Build for Multiple Platforms
         run: |
           mkdir -p releases
-          PLATFORMS=("windows/amd64" "linux/amd64" "darwin/amd64" "darwin/arm64")
+          PLATFORMS=("windows/amd64" "linux/amd64" "linux/arm64" "darwin/amd64" "darwin/arm64")
           for platform in "${PLATFORMS[@]}"; do
             OS=${platform%/*}
             ARCH=${platform#*/}
