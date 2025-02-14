@@ -1,126 +1,103 @@
-# TinyASS - Tiny Assembly Interpreter
+TinyASS - Tiny Assembly Language Interpreter and Emulator
 
-TinyASS is a simple emulator for a tiny custom processor and its assembly language. It allows you to write and execute basic assembly instructions.
+Overview:
+------------
+TinyASS is an emulator for a custom, minimalistic processor along with its assembly language.
+It provides functionality for parsing assembly instructions, executing them on a simulated CPU,
+and interacting via a command-line REPL or by running script files. The project is structured
+into several packages, each with distinct responsibilities:
 
-## Features
+1. commands:
+  - Contains definitions for opcodes and the Instruction type that represents a single assembly
+    instruction. 
+  - Implements parsing functions (e.g., ParseInstruction, ParseRegister, ParseMemory, ParseValue)
+    to convert string representations of instructions into structured data.
+  - Provides error handling with detailed messages for invalid registers, memory addresses, and
+    values to ensure robust input validation.
+  - Supports a comprehensive set of operations including arithmetic (ADD, SUB, MUL, DIV, REM),
+    bitwise (AND, OR, XOR, NOT), shift instructions (SHL, SHR), comparisons (GT, LT, GTE, LTE, EQ, NEQ),
+    jumps (JMP, JZ, JNZ), memory operations (LOAD, STORE), and output (PRINT, HALT).
 
-- **Hexadecimal Memory Addresses Only:**  
-  Memory addresses must be provided in hexadecimal format with a `0x` prefix (e.g., `0x00` to `0xFF`).  
-  Decimal values are not accepted.
+2. runtime:
+  - Implements the CPU simulation which contains registers, memory, the program counter, and the
+    loaded instructions.
+  - Provides methods (e.g., LoadProgram, Execute) for loading a parsed program into CPU memory and
+    executing each instruction sequentially.
+  - Handles execution flow control, including jump instructions and error detection (e.g., division
+    by zero), making sure the CPU state is accurately maintained.
+  - Offers a REPL (Read-Eval-Print Loop) mode so users can manually enter and execute assembly
+    commands interactively.
+  - Includes auxiliary functions to display the CPU’s registers and memory state in a user-friendly
+    manner with color-coded output.
 
-- **Instructions:**  
-  Supports basic arithmetic and bitwise operations, memory store, and branch instructions.  
-  Use commands like `LOAD`, `STORE`, `ADD`, etc.
+3. utils:
+  - Supplies helper functionality for better user experience such as colored terminal output using
+    ANSI escape codes.
+  - Contains utility functions like ClearScreen to support cross-platform console manipulations.
+  - Enhances overall readability and maintenance by centralizing common behaviors like formatted
+    print routines and error messaging.
 
-- **REPL Mode and Script Execution:**  
-  Run the interpreter in interactive mode or supply a script file.
+4. main:
+  - Acts as the entry point for the TinyASS application.
+  - Parses command-line arguments to determine whether to run a provided assembly script (via RunFile)
+    or to launch the interactive REPL environment.
+  - Provides version information to users through a command-line flag.
 
-## Getting Started
+5. CI/CD Workflows:
+  - The repository includes GitHub Actions workflows for continuous integration (CI) that compile,
+    lint, format check, and test the Go code on each push or pull request.
+  - A separate release workflow ensures automated building of binaries for multiple platforms,
+    version tagging, and GitHub Releases integration for streamlined deployment.
 
-### Prerequisites
+Testing:
+------------
+A comprehensive suite of unit tests validates the functionality of instruction parsing and CPU
+execution (e.g., handling arithmetic operations, error conditions like division by zero, and output
+via PRINT). This helps maintain code quality and ensures that updates don’t introduce regressions.
 
-- Go 1.23.2 or later
+Usage:
+------------
+Users can interact with TinyASS either by running assembly scripts from files or by entering commands
+directly into the REPL. Commands support essential operations to emulate the behavior of simple
+assembly instructions, making the tool ideal for educational purposes or as a basis for further
+extension and experimentation with low-level programming concepts.
 
-### Installation
+Overall, TinyASS is designed to be modular, extensible, and user-friendly, providing clear error messages,
+robust parsing, and a straightforward emulation environment for custom assembly language programming.
 
-1. Clone the repository:
-    ```sh
-    git clone https://github.com/itsfuad/tinyass.git
-    cd tinyass
-    ```
+## Example Usage
 
-2. Build the project:
-    ```sh
-    go build
-    ```
+Download the release binary for your platform from the [Releases](github.com/itsfuad/tinyass/releases) page.
 
-### Usage
-
-- **REPL Mode:**
-
-  ```bash
-  go run main.go
-  ```
-
-- **Script Mode:**
-
-  ```bash
-  go run main.go script.ass
-  ```
-
-- **Version:**
-
-  ```bash
-  go run main.go --version
-  ```
-
-You will enter the REPL interface where you can type assembly instructions.
-
-### Example
-
-```sh
-> LOAD R0 10
-> LOAD R1 20
-> ADD R2 R0 R1
-> reg
-Registers: R0=10 R1=20 R2=30 R3=0
-> HALT
+To build the project:
+```bash
+go build -o tinyass main.go
 ```
 
-## Example Assembly File
-
-```assembly
-LOAD R0 10
-LOAD R1 0
-ADD R2 R0 R1
-STORE R2 0x64
-DIV R1 R2 R1
-PRINT R2      ; Display the value of register R2
-PRINT MEM 0x64 ; Display the value at memory address 0x64
+To run an assembly script:
+```bash
+go run main.go path/to/script.ass
 ```
 
-### Commands
+To launch the interactive REPL:
+```bash
+go run main.go
+```
 
-- `LOAD reg val` - Load value into register
-- `STORE reg addr` - Store value from register into memory address
-- `ADD dest s1 s2` - Add s1 and s2 into dest
-- `SUB dest s1 s2` - Subtract s2 from s1 into dest
-- `MUL dest s1 s2` - Multiply s1 and s2 into dest
-- `DIV dest s1 s2` - Divide s1 by s2 into dest
-- `REM dest s1 s2` - Remainder of s1 divided by s2 into dest
-- `AND dest s1 s2` - Bitwise AND of s1 and s2 into dest
-- `OR dest s1 s2` - Bitwise OR of s1 and s2 into dest
-- `XOR dest s1 s2` - Bitwise XOR of s1 and s2 into dest
-- `NOT dest s1` - Bitwise NOT of s1 into dest
-- `SHL dest s1 s2` - Shift s1 left by s2 bits into dest
-- `SHR dest s1 s2` - Shift s1 right by s2 bits into dest
-- `GT dest s1 s2` - Set dest to 1 if s1 > s2, else 0
-- `LT dest s1 s2` - Set dest to 1 if s1 < s2, else 0
-- `GTE dest s1 s2` - Set dest to 1 if s1 >= s2, else 0
-- `LTE dest s1 s2` - Set dest to 1 if s1 <= s2, else 0
-- `EQ dest s1 s2` - Set dest to 1 if s1 == s2, else 0
-- `NEQ dest s1 s2` - Set dest to 1 if s1 != s2, else 0
-- `JMP addr` - Jump to address
-- `JZ reg addr` - Jump to address if register is zero
-- `JNZ reg addr` - Jump to address if register is not zero
-- `HALT` - Stop execution
-- `reg` - Show registers
-- `mem` - Show memory
-- `PRINT Rn` - Print value of register Rn
-- `PRINT MEM addr` - Print value at memory address
-- `version` - Show version info
-- `exit` - Exit interpreter
-- `cls` - Clear the screen
-- `help` - Show help message
+Display version information:
+```bash
+go run main.go --version
+```
 
-## Error Handling
+## Contribution Guidelines
 
-- If an invalid memory address is provided (outside `0x00` to `0xFF`), the interpreter will report an error.
+Contributions are welcome! Please consider the following:
+- Fork the repository and create a new branch for your feature or bugfix.
+- Follow the existing coding style and include tests where applicable.
+- Ensure your changes pass the CI pipeline.
+- Update documentation and example usage if needed.
+- Run `go fmt ./...` before pushing.
+- Open a pull request with a clear description of your changes and reference any related issues.
+- For major changes, please open an issue first to discuss what you would like to change.
 
-## Contributing
-
-Contributions are welcome! Please open an issue or submit a pull request.
-
-## License
-
-This project is licensed under the MIT License.
+All contributions must adhere to the project’s [License](LICENSE).
