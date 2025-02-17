@@ -120,6 +120,11 @@ func ParseInstruction(line string) (Instruction, error) {
 	}
 }
 
+// ParseRegister validates and parses a register string formatted as "R0" to "R3".
+// It checks that the input string begins with "R", is exactly 2 characters long,
+// and that the following character represents a numeric value between 0 and 3 (inclusive).
+// On a valid register string, the function returns the parsed register number as an int.
+// If the register is invalid, it returns an error with an appropriate formatting message.
 func ParseRegister(reg string) (int, error) {
 	if !(strings.HasPrefix(reg, "R") && len(reg) == 2 && reg[1] >= '0' && reg[1] <= '3') {
 		return 0, fmt.Errorf(INVALID_REGISTER_ERROR, reg)
@@ -131,11 +136,18 @@ func ParseRegister(reg string) (int, error) {
 	return num, nil
 }
 
+// ParseMemory parses a memory address provided as a hexadecimal string with a "0x" or "0X" prefix.
+// It trims any surrounding whitespace, ensures the address has the correct prefix, and converts
+// the hexadecimal digits into an integer. An error is returned if the address lacks the proper prefix,
+// if the conversion fails, or if the resulting integer is negative or exceeds the defined limits
+// (i.e., when it is not within the valid range defined by MEMORY_SIZE).
 func ParseMemory(addr string) (int, error) {
 	addr = strings.TrimSpace(addr)
+	// if address does not start with 0x or 0X, return error
 	if !(strings.HasPrefix(addr, "0x") || strings.HasPrefix(addr, "0X")) {
 		return 0, fmt.Errorf(INVALID_MEMORY_ADDRESS, addr)
 	}
+	// convert hex string to integer. parse address from 3rd character to end
 	num, err := strconv.ParseInt(addr[2:], 16, 0)
 	if err != nil || int(num) < 0 || int(num) >= MEMORY_SIZE {
 		return 0, fmt.Errorf(INVALID_MEMORY_ADDRESS, addr)
@@ -143,6 +155,8 @@ func ParseMemory(addr string) (int, error) {
 	return int(num), nil
 }
 
+// ParseValue parses a string value into an integer. It trims any surrounding whitespace,
+// and attempts to convert the string into an integer. If the conversion fails, an error
 func ParseValue(val string) (int, error) {
 
 	//validate length of value
@@ -150,13 +164,14 @@ func ParseValue(val string) (int, error) {
 		return 0, fmt.Errorf(INVALID_VALUE, val)
 	}
 
-	num, err := strconv.Atoi(strings.TrimSpace(val))
+	num, err := strconv.Atoi(strings.TrimSpace(val)) // convert string to integer
 	if err != nil {
 		return 0, fmt.Errorf(INVALID_VALUE, val)
 	}
 	return num, nil
 }
 
+// ParseLoad parses the LOAD instruction. It expects 3 parts: "LOAD", a register, and a value.
 func ParseLoad(parts []string) (Instruction, error) {
 	if len(parts) != 3 {
 		return Instruction{}, fmt.Errorf("LOAD requires 2 operands\nExample: LOAD R[0-3] val")
@@ -175,6 +190,7 @@ func ParseLoad(parts []string) (Instruction, error) {
 	return Instruction{LOAD, []int{reg, val}}, nil
 }
 
+// ParseAND parses the AND instruction. It expects 4 parts: "AND", two registers, and a destination register.
 func ParseAND(parts []string) (Instruction, error) {
 	if len(parts) != 4 {
 		return Instruction{}, fmt.Errorf("AND requires 3 operands\nExample: AND R[0-3] R[0-3] R[0-3]")
@@ -186,6 +202,7 @@ func ParseAND(parts []string) (Instruction, error) {
 	return Instruction{AND, []int{registers[0], registers[1], registers[2]}}, nil
 }
 
+// ParseOR parses the OR instruction. It expects 4 parts: "OR", two registers, and a destination register.
 func ParseOR(parts []string) (Instruction, error) {
 	if len(parts) != 4 {
 		return Instruction{}, fmt.Errorf("OR requires 3 operands\nExample: OR R[0-3] R[0-3] R[0-3]")
@@ -197,6 +214,7 @@ func ParseOR(parts []string) (Instruction, error) {
 	return Instruction{OR, []int{registers[0], registers[1], registers[2]}}, nil
 }
 
+// ParseXOR parses the XOR instruction. It expects 4 parts: "XOR", two registers, and a destination register.
 func ParseXOR(parts []string) (Instruction, error) {
 	if len(parts) != 4 {
 		return Instruction{}, fmt.Errorf("XOR requires 3 operands\nExample: XOR R[0-3] R[0-3] R[0-3]")
@@ -208,6 +226,7 @@ func ParseXOR(parts []string) (Instruction, error) {
 	return Instruction{XOR, []int{registers[0], registers[1], registers[2]}}, nil
 }
 
+// ParseNOT parses the NOT instruction. It expects 3 parts: "NOT", a register, and a destination register.
 func ParseNOT(parts []string) (Instruction, error) {
 	if len(parts) != 3 {
 		return Instruction{}, fmt.Errorf("NOT requires 2 operands\nExample: NOT R[0-3] R[0-3]")
@@ -219,6 +238,7 @@ func ParseNOT(parts []string) (Instruction, error) {
 	return Instruction{NOT, []int{registers[0], registers[1]}}, nil
 }
 
+// ParseSHL parses the SHL instruction. It expects 4 parts: "SHL", two registers, and a destination register.
 func ParseSHL(parts []string) (Instruction, error) {
 	if len(parts) != 4 {
 		return Instruction{}, fmt.Errorf("SHL requires 3 operands\nExample: SHL R[0-3] R[0-3] R[0-3]")
@@ -230,6 +250,7 @@ func ParseSHL(parts []string) (Instruction, error) {
 	return Instruction{SHL, []int{registers[0], registers[1], registers[2]}}, nil
 }
 
+// ParseSHR parses the SHR instruction. It expects 4 parts: "SHR", two registers, and a destination register.
 func ParseSHR(parts []string) (Instruction, error) {
 	if len(parts) != 4 {
 		return Instruction{}, fmt.Errorf("SHR requires 3 operands\nExample: SHR R[0-3] R[0-3] R[0-3]")
@@ -241,6 +262,7 @@ func ParseSHR(parts []string) (Instruction, error) {
 	return Instruction{SHR, []int{registers[0], registers[1], registers[2]}}, nil
 }
 
+// ParseStore parses the STORE instruction. It expects 3 parts: "STORE", a register, and a memory address.
 func ParseStore(parts []string) (Instruction, error) {
 	if len(parts) != 3 {
 		return Instruction{}, fmt.Errorf("STORE requires 2 operands\nExample: STORE R[0-3] addr")
@@ -258,6 +280,7 @@ func ParseStore(parts []string) (Instruction, error) {
 	return Instruction{STORE, []int{reg, addr}}, nil
 }
 
+// ParseRegisters parses a slice of register strings into a slice of integers.
 func ParseRegisters(parts ...string) ([]int, error) {
 	var regs []int
 	for _, reg := range parts {
@@ -270,6 +293,7 @@ func ParseRegisters(parts ...string) ([]int, error) {
 	return regs, nil
 }
 
+// ParseAdd parses the ADD instruction. It expects 4 parts: "ADD", two registers, and a destination register.
 func ParseAdd(parts []string) (Instruction, error) {
 	if len(parts) != 4 {
 		return Instruction{}, fmt.Errorf("ADD requires 3 operands\nExample: ADD R[0-3] R[0-3] R[0-3]")
@@ -281,6 +305,7 @@ func ParseAdd(parts []string) (Instruction, error) {
 	return Instruction{ADD, []int{registers[0], registers[1], registers[2]}}, nil
 }
 
+// ParseSub parses the SUB instruction. It expects 4 parts: "SUB", two registers, and a destination register.
 func ParseSub(parts []string) (Instruction, error) {
 	if len(parts) != 4 {
 		return Instruction{}, fmt.Errorf("SUB requires 3 operands\nExample: SUB R[0-3] R[0-3] R[0-3]")
@@ -292,6 +317,7 @@ func ParseSub(parts []string) (Instruction, error) {
 	return Instruction{SUB, []int{registers[0], registers[1], registers[2]}}, nil
 }
 
+// ParseMul parses the MUL instruction. It expects 4 parts: "MUL", two registers, and a destination register.
 func ParseMul(parts []string) (Instruction, error) {
 	if len(parts) != 4 {
 		return Instruction{}, fmt.Errorf("MUL requires 3 operands\nExample: MUL R[0-3] R[0-3] R[0-3]")
@@ -303,6 +329,7 @@ func ParseMul(parts []string) (Instruction, error) {
 	return Instruction{MUL, []int{registers[0], registers[1], registers[2]}}, nil
 }
 
+// ParseDiv parses the DIV instruction. It expects 4 parts: "DIV", two registers, and a destination register.
 func ParseDiv(parts []string) (Instruction, error) {
 	if len(parts) != 4 {
 		return Instruction{}, fmt.Errorf("DIV requires 3 operands\nExample: DIV R[0-3] R[0-3] R[0-3]")
@@ -314,6 +341,7 @@ func ParseDiv(parts []string) (Instruction, error) {
 	return Instruction{DIV, []int{registers[0], registers[1], registers[2]}}, nil
 }
 
+// ParseRem parses the REM instruction. It expects 4 parts: "REM", two registers, and a destination register.
 func ParseRem(parts []string) (Instruction, error) {
 	if len(parts) != 4 {
 		return Instruction{}, fmt.Errorf("REM requires 3 operands\nExample: REM R[0-3] R[0-3] R[0-3]")
@@ -325,6 +353,7 @@ func ParseRem(parts []string) (Instruction, error) {
 	return Instruction{REM, []int{registers[0], registers[1], registers[2]}}, nil
 }
 
+// ParseJmp parses the JMP instruction. It expects 2 parts: "JMP" and a memory address.
 func ParseJmp(parts []string) (Instruction, error) {
 	if len(parts) != 2 {
 		return Instruction{}, fmt.Errorf("JMP requires 1 operand\nExample: JMP addr")
@@ -336,6 +365,7 @@ func ParseJmp(parts []string) (Instruction, error) {
 	return Instruction{JMP, []int{addr}}, nil
 }
 
+// ParseJz parses the JZ instruction. It expects 3 parts: "JZ", a register, and a memory address.
 func ParseJz(parts []string) (Instruction, error) {
 	if len(parts) != 3 {
 		return Instruction{}, fmt.Errorf("JZ requires 2 operands\nExample: JZ R[0-3] addr")
@@ -351,6 +381,7 @@ func ParseJz(parts []string) (Instruction, error) {
 	return Instruction{JZ, []int{reg, addr}}, nil
 }
 
+// ParseJnz parses the JNZ instruction. It expects 3 parts: "JNZ", a register, and a memory address.
 func ParseJnz(parts []string) (Instruction, error) {
 	if len(parts) != 3 {
 		return Instruction{}, fmt.Errorf("JNZ requires 2 operands\nExample: JNZ R[0-3] addr")
@@ -366,6 +397,7 @@ func ParseJnz(parts []string) (Instruction, error) {
 	return Instruction{JNZ, []int{reg, addr}}, nil
 }
 
+// ParsePrint parses the PRINT instruction. It expects 2 parts: "PRINT" and a register or memory address.
 func ParsePrint(parts []string) (Instruction, error) {
 	if len(parts) != 2 && len(parts) != 3 {
 		return Instruction{}, fmt.Errorf("PRINT requires 1 or 2 operands\nExample: PRINT R0 or PRINT MEM 100")
