@@ -1,7 +1,153 @@
-LOAD R0 10
-LOAD R1 0
-ADD R2 R0 R1
+; Example Assembly Program
+
+; Initialize registers
+LOAD R0 10    ; Load 10 into R0
+LOAD R1 5     ; Load 5 into R1
+LOAD R2 0     ; Load 0 into R2 (result)
+
+; Add R0 and R1, store in R2
+ADD R2 R0 R1 ; R2 = R0 + R1
+
+; Store R2 into memory location 0x64 (100 in decimal)
 STORE R2 0x64
-DIV R1 R2 R1
-PRINT R2      ; Display the value of register R2
-PRINT MEM 0x64 ; Display the value at memory address 0x64
+
+; Print the value of R2
+PRINT R2
+
+; Print the value at memory address 0x64
+PRINT MEM 0x64
+
+; Subtract R1 from R0, store in R2
+SUB R2 R0 R1 ; R2 = R0 - R1
+
+; Print the value of R2
+PRINT R2
+
+; Multiply R0 and R1, store in R2
+MUL R2 R0 R1 ; R2 = R0 * R1
+
+; Print the value of R2
+PRINT R2
+
+; Divide R0 by R1, store in R2
+DIV R2 R0 R1 ; R2 = R0 / R1
+
+; Print the value of R2
+PRINT R2
+
+; Remainder of R0 divided by R1, store in R2
+REM R2 R0 R1 ; R2 = R0 % R1
+
+; Print the value of R2
+PRINT R2
+
+; Bitwise AND of R0 and R1, store in R2
+AND R2 R0 R1
+
+; Print the value of R2
+PRINT R2
+
+; Bitwise OR of R0 and R1, store in R2
+OR R2 R0 R1
+
+; Print the value of R2
+PRINT R2
+
+; Bitwise XOR of R0 and R1, store in R2
+XOR R2 R0 R1
+
+; Print the value of R2
+PRINT R2
+
+; Bitwise NOT of R0, store in R2
+NOT R2 R0
+
+; Print the value of R2
+PRINT R2
+
+; Shift R0 left by 2 bits, store in R2
+SHL R2 R0 R1
+
+; Print the value of R2
+PRINT R2
+
+; Shift R0 right by 2 bits, store in R2
+SHR R2 R0 R1
+
+; Print the value of R2
+PRINT R2
+
+; Greater Than comparison: R0 > R1, store result (1 or 0) in R2
+GT R2 R0 R1
+
+; Print the value of R2
+PRINT R2
+
+; Less Than comparison: R0 < R1, store result (1 or 0) in R2
+LT R2 R0 R1
+
+; Print the value of R2
+PRINT R2
+
+; Greater Than or Equal comparison: R0 >= R1, store result (1 or 0) in R2
+GTE R2 R0 R1
+
+; Print the value of R2
+PRINT R2
+
+; Less Than or Equal comparison: R0 <= R1, store result (1 or 0) in R2
+LTE R2 R0 R1
+
+; Print the value of R2
+PRINT R2
+
+; Equal comparison: R0 == R1, store result (1 or 0) in R2
+EQ R2 R0 R1
+
+; Print the value of R2
+PRINT R2
+
+; Not Equal comparison: R0 != R1, store result (1 or 0) in R2
+NEQ R2 R0 R1
+
+; Print the value of R2
+PRINT R2
+
+; Jump to memory address 0x70 (112 in decimal) if R2 is zero
+JZ R2 0x70
+
+; Print a message if the jump is not taken
+LOAD R3 99
+PRINT R3
+
+; Jump to memory address 0x80 (128 in decimal) if R2 is not zero
+JNZ R2 0x80
+
+; Print a message if the jump is not taken
+LOAD R3 111
+PRINT R3
+
+; Jump to memory address 0x90 (144 in decimal)
+JMP 0x90
+
+; This code will not be executed because of the JMP instruction above
+LOAD R3 123
+PRINT R3
+
+; Target address for JZ instruction (0x70)
+; This code will be executed if R2 is zero
+;LOAD R3 77
+;PRINT R3
+
+; Target address for JNZ instruction (0x80)
+; This code will be executed if R2 is not zero
+;LOAD R3 88
+;PRINT R3
+
+; Target address for JMP instruction (0x90)
+; This code will be executed unconditionally
+;LOAD R3 99
+;PRINT R3
+
+; Stop execution
+HALT

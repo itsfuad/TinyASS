@@ -9,6 +9,10 @@ import (
 // Memory size
 const MEMORY_SIZE = 256
 
+// Min/Max register values
+const MIN_REGISTER_VALUE = 0
+const MAX_REGISTER_VALUE = 3
+
 // Opcodes
 const (
 	LOAD  = iota // Load value into register
@@ -43,6 +47,7 @@ const INVALID_VALUE = "invalid value: %s"
 
 // Instruction format
 type Instruction struct {
+	// Opcode is the operation code
 	Opcode   int
 	Operands []int
 }
